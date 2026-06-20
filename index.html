@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="M&D Workspace">
+<meta name="theme-color" content="#0a0914">
+<link rel="manifest" href="manifest.json">
+<title>M&D Collection — AI CEO Workspace</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#0a0914;font-family:'Segoe UI',system-ui,sans-serif;color:#e0e7ff;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:#4338ca;border-radius:4px}
+.hdr{background:linear-gradient(90deg,#1a1740,#2d2b6e);padding:13px 16px 10px;border-bottom:1px solid #3730a3;position:sticky;top:0;z-index:200}
+.hdr-row{display:flex;justify-content:space-between;align-items:center}
+.hdr-sub{color:#818cf8;font-size:9px;letter-spacing:2px;text-transform:uppercase}
+.hdr-title{color:#fff;font-size:17px;font-weight:800;letter-spacing:-.3px}
+.hdr-btns{display:flex;gap:7px}
+.btn-up{background:#1e1b4b;border:1px solid #4338ca;color:#c4b5fd;padding:7px 11px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:600;white-space:nowrap}
+.btn-ai-h{background:linear-gradient(90deg,#7c3aed,#4f46e5);border:none;color:#fff;padding:7px 13px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700}
+.nav{background:#110f24;border-bottom:1px solid #1e1b4b;display:flex;position:sticky;top:56px;z-index:199}
+.nb{flex:1;padding:10px 2px 8px;background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer;color:#4b5563;font-size:10px;font-weight:700;transition:all .2s;line-height:1.4}
+.nb.on{color:#a78bfa;border-bottom-color:#7c3aed}
+.ni{font-size:16px;display:block;margin-bottom:2px}
+.pg{display:none;padding:14px 13px 110px;max-width:800px;margin:0 auto}
+.pg.on{display:block}
+.hero{background:linear-gradient(135deg,#2d2b6e,#4c1d95);padding:18px;border-radius:14px;margin-bottom:16px;border:1px solid #5b21b6}
+.hero-lbl{color:#c4b5fd;font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.hero-ttl{color:#fff;font-size:19px;font-weight:800;margin-top:3px}
+.kgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px}
+.kcard{background:linear-gradient(135deg,#1a1740,#1e1b4b);border:1px solid #3730a3;border-radius:13px;padding:14px 13px}
+.klbl{color:#a5b4fc;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.7px}
+.kval{font-size:20px;font-weight:800;margin:5px 0 2px;line-height:1}
+.krow{display:flex;justify-content:space-between;align-items:center}
+.ktgt{color:#5b5fd6;font-size:10px}
+.up{color:#10b981;font-size:10px;font-weight:700}
+.dn{color:#ef4444;font-size:10px;font-weight:700}
+.pb{background:#0a0914;border-radius:6px;height:6px;overflow:hidden;margin-top:5px}
+.pf{height:100%;border-radius:6px;transition:width 1s ease}
+.ppct{color:#6366f1;font-size:9px;margin-top:2px;text-align:right}
+.sh{display:flex;align-items:center;gap:7px;margin:18px 0 10px}
+.sh span{font-size:16px}.sh h3{color:#c4b5fd;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.7px}
+.lc{background:#1a1740;border:1px solid #3730a3;border-radius:11px;padding:12px 13px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px}
+.lt{color:#e0e7ff;font-size:12px;font-weight:600;margin-bottom:2px}
+.ls{color:#818cf8;font-size:11px}
+.lv{color:#34d399;font-size:14px;font-weight:700}
+.badge{padding:2px 8px;border-radius:99px;font-size:9px;font-weight:700;letter-spacing:.3px;white-space:nowrap}
+.bg{background:#d1fae5;color:#065f46}.by{background:#fef3c7;color:#92400e}
+.br{background:#fee2e2;color:#991b1b}.bb{background:#dbeafe;color:#1e40af}
+.bp{background:#ede9fe;color:#5b21b6}
+.cfg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.cfc{background:#1a1740;border:1px solid #3730a3;border-radius:10px;padding:12px 8px;text-align:center}
+.tw{background:#1a1740;border:1px solid #3730a3;border-radius:11px;padding:13px;margin-bottom:16px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11px;min-width:280px}
+th{color:#818cf8;font-weight:600;padding:4px 6px 8px;text-align:right}th:first-child{text-align:left}
+td{padding:8px 6px;border-top:1px solid #1e1b4b;color:#94a3b8;text-align:right}td:first-child{color:#c4b5fd;text-align:left}
+.tdm{color:#a78bfa;font-weight:700}
+.btnf{width:100%;padding:13px;background:linear-gradient(90deg,#7c3aed,#4f46e5);border:none;border-radius:11px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;letter-spacing:.3px}
+.btnf:active{opacity:.85}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.btnf2{padding:11px;background:#1e1b4b;border:1px solid #4338ca;border-radius:11px;color:#c4b5fd;font-size:12px;font-weight:600;cursor:pointer}
+.bbar{position:fixed;bottom:0;left:0;right:0;background:#110f24;border-top:1px solid #1e1b4b;padding:8px 10px;display:flex;gap:6px;z-index:200}
+.bbb{flex:1;padding:7px 2px;background:#1a1740;border:1px solid #3730a3;border-radius:7px;color:#c4b5fd;font-size:9px;font-weight:600;cursor:pointer;line-height:1.6}
+.ov{display:none;position:fixed;inset:0;background:rgba(5,4,15,.95);z-index:300;flex-direction:column}
+.ov.on{display:flex}
+.ovh{background:linear-gradient(135deg,#1a1740,#0f0e1a);padding:13px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #3730a3;flex-shrink:0}
+.ovt{color:#fff;font-size:15px;font-weight:800}
+.ovcls{background:#2d1b69;border:none;color:#c4b5fd;padding:7px 12px;border-radius:7px;cursor:pointer;font-weight:700;font-size:13px}
+.cmsg{flex:1;overflow-y:auto;padding:13px 13px 6px;display:flex;flex-direction:column;gap:10px}
+.mu{align-self:flex-end;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;padding:10px 13px;border-radius:14px 14px 3px 14px;max-width:90%;font-size:12px;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.ma{align-self:flex-start;background:#1a1740;border:1px solid #3730a3;color:#e0e7ff;padding:10px 13px;border-radius:14px 14px 14px 3px;max-width:94%;font-size:12px;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.typing{display:flex;gap:4px;padding:10px 13px;background:#1a1740;border:1px solid #3730a3;border-radius:14px 14px 14px 3px;width:fit-content}
+.dot{width:7px;height:7px;border-radius:50%;background:#7c3aed;animation:pulse 1.2s ease-in-out infinite}
+.dot:nth-child(2){animation-delay:.3s}.dot:nth-child(3){animation-delay:.6s}
+@keyframes pulse{0%,100%{opacity:.25;transform:scale(.75)}50%{opacity:1;transform:scale(1)}}
+.cia{padding:9px 12px;background:#1a1740;border-top:1px solid #1e1b4b;display:flex;gap:8px;flex-shrink:0}
+.cin{flex:1;background:#0f0e1a;border:1px solid #3730a3;border-radius:9px;padding:10px 12px;color:#e0e7ff;font-size:13px;outline:none;font-family:inherit}
+.cin:focus{border-color:#7c3aed}
+.csnd{background:linear-gradient(90deg,#7c3aed,#4f46e5);border:none;border-radius:9px;padding:10px 15px;color:#fff;font-weight:700;font-size:15px;cursor:pointer;flex-shrink:0}
+.csnd:disabled{opacity:.45;cursor:default}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:10px 13px 4px;border-bottom:1px solid #1e1b4b;flex-shrink:0;overflow-x:auto}
+.chip{background:#1e1b4b;border:1px solid #3730a3;border-radius:99px;padding:5px 11px;color:#a5b4fc;font-size:10px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.chip:active{background:#3730a3}
+.alert-box{background:linear-gradient(135deg,#450a0a,#7f1d1d);border:1px solid #ef4444;border-radius:11px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.ubox{background:#1a1740;border:2px dashed #4338ca;border-radius:14px;padding:28px 18px;text-align:center;margin-bottom:14px}
+.ulbl{background:linear-gradient(90deg,#7c3aed,#4f46e5);padding:11px 20px;border-radius:9px;color:#fff;font-weight:700;cursor:pointer;font-size:13px;display:inline-block;margin-top:14px}
+.sbox{background:#1a1740;border:1px solid #3730a3;border-radius:11px;padding:13px;color:#c4b5fd;font-size:12px;margin-top:12px;line-height:1.7}
+.rbox{background:#1a1740;border:1px solid #34d399;border-radius:11px;padding:13px;color:#e0e7ff;font-size:12px;line-height:1.8;white-space:pre-wrap;margin-top:12px}
+@media(max-width:360px){.kval{font-size:17px}.hdr-title{font-size:15px}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-row">
+    <div>
+      <div class="hdr-sub">AI CEO Workspace</div>
+      <div class="hdr-title">M&amp;D Collection</div>
+    </div>
+    <div class="hdr-btns">
+      <button class="btn-up" onclick="openUpload()">📊 Upload</button>
+      <button class="btn-ai-h" onclick="openAI('ceo')">🤖 AI</button>
+    </div>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nb on" onclick="showPage(0,this)"><span class="ni">👑</span>CEO</button>
+  <button class="nb" onclick="showPage(1,this)"><span class="ni">📣</span>Marketing</button>
+  <button class="nb" onclick="showPage(2,this)"><span class="ni">💰</span>Finance</button>
+  <button class="nb" onclick="showPage(3,this)"><span class="ni">🔍</span>Kompetitor</button>
+</div>
+
+<!-- PAGE 1: CEO -->
+<div class="pg on" id="pg0">
+  <div class="hero">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+      <div><div class="hero-lbl">Laporan Bulan Ini</div><div class="hero-ttl">CEO Dashboard</div></div>
+      <div style="text-align:right"><div style="color:#a5b4fc;font-size:10px">Target Omzet</div><div style="color:#fbbf24;font-size:16px;font-weight:800">Rp 200jt – 400jt</div></div>
+    </div>
+  </div>
+  <div class="kgrid">
+    <div class="kcard"><div class="klbl">Total Omzet</div><div class="kval" style="color:#a78bfa">Rp 187,5jt</div><div class="krow"><span class="ktgt">Target: Rp 200jt</span><span class="up">▲ 12.4%</span></div><div class="pb"><div class="pf" style="width:93.75%;background:#7c3aed"></div></div><div class="ppct">93.75% target</div></div>
+    <div class="kcard"><div class="klbl">Profit Bersih</div><div class="kval" style="color:#34d399">Rp 43,2jt</div><div class="krow"><span class="ktgt">Target: Rp 50jt</span><span class="up">▲ 8.1%</span></div><div class="pb"><div class="pf" style="width:86.4%;background:#34d399"></div></div><div class="ppct">86.4% target</div></div>
+    <div class="kcard"><div class="klbl">ROAS</div><div class="kval" style="color:#fbbf24">3.2x</div><div class="krow"><span class="ktgt">Target: 3x ✅</span><span class="up">▲ 0.4</span></div><div class="pb"><div class="pf" style="width:100%;background:#10b981"></div></div><div class="ppct">✅ Tercapai!</div></div>
+    <div class="kcard"><div class="klbl">Conversion Rate</div><div class="kval" style="color:#f472b6">3.8%</div><div class="krow"><span class="ktgt">Target: 4%</span><span class="dn">▼ 0.2%</span></div><div class="pb"><div class="pf" style="width:95%;background:#f472b6"></div></div><div class="ppct">95% target</div></div>
+    <div class="kcard"><div class="klbl">AOV</div><div class="kval" style="color:#60a5fa">Rp 215rb</div><div class="krow"><span class="ktgt">Target: 200rb ✅</span><span class="up">▲ 7.5%</span></div><div class="pb"><div class="pf" style="width:100%;background:#10b981"></div></div><div class="ppct">✅ Tercapai!</div></div>
+    <div class="kcard"><div class="klbl">Repeat Order</div><div class="kval" style="color:#fb923c">28.4%</div><div class="krow"><span class="ktgt">Target: 30%</span><span class="up">▲ 3.2%</span></div><div class="pb"><div class="pf" style="width:94.7%;background:#fb923c"></div></div><div class="ppct">94.7% target</div></div>
+  </div>
+  <div class="btns">
+    <button class="btnf2" onclick="openAI('report')">📋 Daily Report</button>
+    <button class="btnf2" onclick="openAI('strategi')">🎯 Strategi</button>
+  </div>
+  <button class="btnf" onclick="openAI('ceo')">🤖 Analisis Lengkap AI</button>
+</div>
+
+<!-- PAGE 2: MARKETING -->
+<div class="pg" id="pg1">
+  <div class="alert-box"><span style="font-size:22px">⚠️</span><div><div style="color:#fca5a5;font-size:12px;font-weight:700">Stok Kritis! Outer Cardigan Rajut</div><div style="color:#f87171;font-size:11px">Sisa 15 unit — terjual 203. Segera restock!</div></div></div>
+  <div class="sh"><span>🎬</span><h3>Konten Hari Ini</h3></div>
+  <div class="lc"><div style="flex:1;min-width:0"><div class="lt">OOTD Hijab Casual | Koleksi Terbaru</div><div style="display:flex;gap:10px;flex-wrap:wrap"><span class="ls">👁 12.400</span><span class="ls">❤️ 842</span><span class="ls">💬 67</span><span class="ls">ER: 6.8%</span></div></div><div style="display:flex;gap:5px;flex-wrap:wrap"><span class="badge bp">TikTok</span><span class="badge bg">Live</span></div></div>
+  <div class="lc"><div style="flex:1;min-width:0"><div class="lt">Review Gamis Premium Lebaran</div><div style="display:flex;gap:10px"><span class="ls">👁 8.700</span><span class="ls">❤️ 631</span><span class="ls">💬 43</span></div></div><div style="display:flex;gap:5px"><span class="badge bp">TikTok</span><span class="badge by">Scheduled</span></div></div>
+  <div class="lc"><div style="flex:1;min-width:0"><div class="lt">Flash Sale Banner Shopee</div><div style="display:flex;gap:10px"><span class="ls">👁 3.200</span><span class="ls">❤️ 210</span><span class="ls">💬 18</span></div></div><div style="display:flex;gap:5px"><span class="badge br">Shopee</span><span class="badge bg">Live</span></div></div>
+  <div class="sh"><span>📡</span><h3>Live Hari Ini</h3></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px">
+    <div style="background:#1a1740;border:1px solid #3730a3;border-radius:11px;padding:13px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span class="badge bp">TikTok</span><span class="ls">19:00-21:00</span></div><div class="ls" style="margin-bottom:4px">Host: Tim A</div><div style="color:#34d399;font-size:16px;font-weight:800">Rp 3,8jt</div><div class="pb"><div class="pf" style="width:76%;background:#7c3aed"></div></div><div class="ls" style="margin-top:2px;font-size:10px">Target Rp 5jt (76%)</div></div>
+    <div style="background:#1a1740;border:1px solid #3730a3;border-radius:11px;padding:13px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span class="badge br">Shopee</span><span class="ls">12:00-14:00</span></div><div class="ls" style="margin-bottom:4px">Host: Tim B</div><div style="color:#34d399;font-size:16px;font-weight:800">Rp 2,6jt</div><div class="pb"><div class="pf" style="width:86.7%;background:#7c3aed"></div></div><div class="ls" style="margin-top:2px;font-size:10px">Target Rp 3jt (86.7%)</div></div>
+  </div>
+  <div class="sh"><span>🤝</span><h3>Affiliate</h3></div>
+  <div class="lc"><div><div class="lt">Dewi Kartika ⭐</div><div class="ls">82K followers</div></div><div style="text-align:right"><div class="lv">Rp 3,2jt</div><div class="ls">Komisi: Rp 320rb</div></div><span class="badge bg">Aktif</span></div>
+  <div class="lc"><div><div class="lt">Siti Rahma</div><div class="ls">45K followers</div></div><div style="text-align:right"><div class="lv">Rp 1,8jt</div><div class="ls">Komisi: Rp 180rb</div></div><span class="badge bg">Aktif</span></div>
+  <div class="lc"><div><div class="lt">Annisa M.</div><div class="ls">120K followers</div></div><div style="text-align:right"><div class="lv">Rp 580rb</div><div class="ls">Komisi: Rp 58rb</div></div><span class="badge bb">Baru</span></div>
+  <div class="sh"><span>🚀</span><h3>Produk Di-Push</h3></div>
+  <div class="lc"><div><div class="lt">Gamis Syari Premium Bordir</div><div class="ls">Stok: 48 | Terjual: 127</div></div><div style="display:flex;gap:5px"><span class="badge by">🎯 Iklan</span><span class="badge bg">Aman</span></div></div>
+  <div class="lc"><div><div class="lt">Set Hijab Voal Motif Batik</div><div class="ls">Stok: 92 | Terjual: 89</div></div><div style="display:flex;gap:5px"><span class="badge by">🎯 Iklan</span><span class="badge bg">Aman</span></div></div>
+  <div class="lc"><div><div class="lt">Outer Cardigan Rajut</div><div class="ls">Stok: 15 | Terjual: 203</div></div><span class="badge br">⚠️ Kritis</span></div>
+  <div class="btns">
+    <button class="btnf2" onclick="openAI('konten')">🎬 Ide Konten</button>
+    <button class="btnf2" onclick="openAI('stok')">📦 Solusi Stok</button>
+  </div>
+  <button class="btnf" onclick="openAI('marketing')">🤖 Analisis Marketing Lengkap</button>
+</div>
+
+<!-- PAGE 3: FINANCE -->
+<div class="pg" id="pg2">
+  <div class="sh"><span>💰</span><h3>Cash Flow Bulan Ini</h3></div>
+  <div class="cfg">
+    <div class="cfc"><div class="ls" style="font-size:10px;margin-bottom:4px">Pemasukan</div><div style="color:#34d399;font-size:13px;font-weight:800">Rp 187,5jt</div></div>
+    <div class="cfc"><div class="ls" style="font-size:10px;margin-bottom:4px">Pengeluaran</div><div style="color:#f87171;font-size:13px;font-weight:800">Rp 144,3jt</div></div>
+    <div class="cfc"><div class="ls" style="font-size:10px;margin-bottom:4px">Bersih</div><div style="color:#fbbf24;font-size:13px;font-weight:800">Rp 43,2jt</div></div>
+  </div>
+  <div class="sh"><span>📊</span><h3>Margin</h3></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px">
+    <div style="background:#1a1740;border:1px solid #3730a3;border-radius:11px;padding:14px"><div class="ls">Margin Kotor</div><div style="color:#34d399;font-size:26px;font-weight:800;margin:4px 0">42.5%</div><div class="pb"><div class="pf" style="width:70.8%;background:#34d399"></div></div></div>
+    <div style="background:#1a1740;border:1px solid #3730a3;border-radius:11px;padding:14px"><div class="ls">Margin Bersih</div><div style="color:#fbbf24;font-size:26px;font-weight:800;margin:4px 0">23.0%</div><div class="pb"><div class="pf" style="width:57.5%;background:#fbbf24"></div></div></div>
+  </div>
+  <div class="sh"><span>🎯</span><h3>Biaya Iklan</h3></div>
+  <div style="background:#1a1740;border:1px solid #3730a3;border-radius:11px;padding:14px;margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px"><div><div class="ls">Shopee Ads</div><div style="color:#f87171;font-size:16px;font-weight:700">Rp 18,5jt</div></div><div style="text-align:right"><div class="ls">TikTok Ads</div><div style="color:#c084fc;font-size:16px;font-weight:700">Rp 12,3jt</div></div></div>
+    <div style="border-top:1px solid #1e1b4b;padding-top:8px"><div style="display:flex;justify-content:space-between"><span class="ls">Total Iklan</span><span style="color:#fbbf24;font-size:14px;font-weight:700">Rp 30,8jt</span></div><div class="pb"><div class="pf" style="width:88%;background:#f59e0b"></div></div><div class="ppct">Budget Rp 35jt — 88% terpakai</div></div>
+  </div>
+  <div class="sh"><span>📋</span><h3>Rincian Biaya</h3></div>
+  <div style="background:#1a1740;border:1px solid #3730a3;border-radius:11px;padding:13px;margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #1e1b4b"><span style="color:#c4b5fd;font-size:12px">HPP Produk</span><span style="color:#e0e7ff;font-size:12px;font-weight:600">Rp 89,4jt</span></div>
+    <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #1e1b4b"><span style="color:#c4b5fd;font-size:12px">Biaya Iklan</span><span style="color:#e0e7ff;font-size:12px;font-weight:600">Rp 30,8jt</span></div>
+    <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #1e1b4b"><span style="color:#c4b5fd;font-size:12px">Komisi Affiliate</span><span style="color:#e0e7ff;font-size:12px;font-weight:600">Rp 8,2jt</span></div>
+    <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #1e1b4b"><span style="color:#c4b5fd;font-size:12px">Operasional</span><span style="color:#e0e7ff;font-size:12px;font-weight:600">Rp 9,8jt</span></div>
+    <div style="display:flex;justify-content:space-between;padding:7px 0"><span style="color:#c4b5fd;font-size:12px">Packing &amp; Logistik</span><span style="color:#e0e7ff;font-size:12px;font-weight:600">Rp 6,1jt</span></div>
+  </div>
+  <div class="btns">
+    <button class="btnf2" onclick="openAI('efisiensi')">✂️ Efisiensi Biaya</button>
+    <button class="btnf2" onclick="openAI('proyeksi')">📈 Proyeksi</button>
+  </div>
+  <button class="btnf" onclick="openAI('finance')">🤖 Analisis Keuangan Lengkap</button>
+</div>
+
+<!-- PAGE 4: KOMPETITOR -->
+<div class="pg" id="pg3">
+  <div class="sh"><span>🆕</span><h3>Produk Baru Kompetitor</h3></div>
+  <div class="lc" style="flex-direction:column;align-items:flex-start"><div style="display:flex;justify-content:space-between;width:100%"><div><div style="color:#c4b5fd;font-size:9px;font-weight:700;text-transform:uppercase">Zahira Official</div><div class="lt">Gamis Tweed Brukat Korea</div></div><div style="text-align:right;flex-shrink:0"><div style="color:#fbbf24;font-size:13px;font-weight:800">Rp 289.000</div><div class="ls" style="font-size:9px">Hari ini 🔴</div></div></div></div>
+  <div class="lc" style="flex-direction:column;align-items:flex-start"><div style="display:flex;justify-content:space-between;width:100%"><div><div style="color:#c4b5fd;font-size:9px;font-weight:700;text-transform:uppercase">NoorFashion</div><div class="lt">Set Modest Linen Premium</div></div><div style="text-align:right;flex-shrink:0"><div style="color:#fbbf24;font-size:13px;font-weight:800">Rp 245.000</div><div class="ls" style="font-size:9px">Kemarin</div></div></div></div>
+  <div class="lc" style="flex-direction:column;align-items:flex-start"><div style="display:flex;justify-content:space-between;width:100%"><div><div style="color:#c4b5fd;font-size:9px;font-weight:700;text-transform:uppercase">Elzatta</div><div class="lt">Khimar Ceruti Anti Kusut</div></div><div style="text-align:right;flex-shrink:0"><div style="color:#fbbf24;font-size:13px;font-weight:800">Rp 179.000</div><div class="ls" style="font-size:9px">2 hari lalu</div></div></div></div>
+  <div class="sh"><span>💲</span><h3>Perbandingan Harga</h3></div>
+  <div class="tw"><table><thead><tr><th style="text-align:left">Produk</th><th style="color:#a78bfa">M&amp;D</th><th>Zahira</th><th>Noor</th><th>Elzatta</th></tr></thead><tbody><tr><td>Gamis Syari</td><td class="tdm">320rb</td><td>289rb</td><td>310rb</td><td>275rb</td></tr><tr><td>Set Hijab Voal</td><td class="tdm">185rb</td><td>165rb</td><td>195rb</td><td>175rb</td></tr><tr><td>Outer Cardigan</td><td class="tdm">225rb</td><td>215rb</td><td>230rb</td><td>199rb</td></tr></tbody></table></div>
+  <div class="sh"><span>🔥</span><h3>Promo Kompetitor</h3></div>
+  <div class="lc"><div><div class="lt">Zahira Official</div><div style="color:#f87171;font-size:11px;font-weight:600">Flash Sale 50%</div><div class="ls">Hari ini 20:00</div></div><span class="badge br">Shopee</span></div>
+  <div class="lc"><div><div class="lt">NoorFashion</div><div style="color:#f87171;font-size:11px;font-weight:600">Buy 2 Get 1</div><div class="ls">Weekend ini</div></div><span class="badge bp">TikTok</span></div>
+  <div class="lc"><div><div class="lt">Elzatta</div><div style="color:#f87171;font-size:11px;font-weight:600">Gratis Ongkir + Voucher 30rb</div><div class="ls">Sampai akhir bulan</div></div><span class="badge br">Shopee</span></div>
+  <div class="sh"><span>⭐</span><h3>Review Terbaru</h3></div>
+  <div style="background:#1a1740;border:1px solid #3730a3;border-radius:10px;padding:12px;margin-bottom:7px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:#c4b5fd;font-size:10px;font-weight:700">Zahira — Gamis Tweed</span><span style="color:#fbbf24;font-size:11px">★★★★★</span></div><div style="color:#e0e7ff;font-size:12px;font-style:italic;margin-bottom:2px">"Kualitas bagus tapi sizing besar"</div><div class="ls" style="font-size:9px">2 jam lalu</div></div>
+  <div style="background:#1a1740;border:1px solid #3730a3;border-radius:10px;padding:12px;margin-bottom:7px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:#c4b5fd;font-size:10px;font-weight:700">NoorFashion — Set Linen</span><span style="color:#fbbf24;font-size:11px">★★★</span></div><div style="color:#e0e7ff;font-size:12px;font-style:italic;margin-bottom:2px">"Warna tidak sesuai foto, kecewa"</div><div class="ls" style="font-size:9px">5 jam lalu</div></div>
+  <div style="background:#1a1740;border:1px solid #3730a3;border-radius:10px;padding:12px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:#c4b5fd;font-size:10px;font-weight:700">Elzatta — Khimar Ceruti</span><span style="color:#fbbf24;font-size:11px">★★★★★</span></div><div style="color:#e0e7ff;font-size:12px;font-style:italic;margin-bottom:2px">"Jahitan rapi, bahan adem banget!"</div><div class="ls" style="font-size:9px">Kemarin</div></div>
+  <div class="btns">
+    <button class="btnf2" onclick="openAI('diferensiasi')">🌟 Diferensiasi</button>
+    <button class="btnf2" onclick="openAI('respons_promo')">🛡️ Respons Promo</button>
+  </div>
+  <button class="btnf" onclick="openAI('competitor')">🤖 Analisis Kompetitor Lengkap</button>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bbar">
+  <button class="bbb" onclick="openAI('report')">📋<br>CEO Report</button>
+  <button class="bbb" onclick="openAI('stok')">📦<br>Stok</button>
+  <button class="bbb" onclick="openAI('iklan')">🎯<br>Iklan</button>
+  <button class="bbb" onclick="openAI('konten')">🎬<br>Konten</button>
+  <button class="bbb" onclick="openAI('free')">💬<br>Tanya AI</button>
+</div>
+
+<!-- AI OVERLAY -->
+<div class="ov" id="ai-ov">
+  <div class="ovh">
+    <div><div style="color:#a5b4fc;font-size:9px;letter-spacing:1px">M&amp;D COLLECTION</div><div class="ovt">🤖 AI CEO Assistant</div></div>
+    <button class="ovcls" onclick="closeAI()">✕ Tutup</button>
+  </div>
+  <div class="chips" id="quick-chips"></div>
+  <div class="cmsg" id="chat-msgs"></div>
+  <div class="cia">
+    <input class="cin" id="cin" placeholder="Tanya apapun tentang bisnis M&D..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}">
+    <button class="csnd" id="csnd" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<!-- UPLOAD OVERLAY -->
+<div class="ov" id="up-ov">
+  <div class="ovh">
+    <div class="ovt">📊 Upload Data Shopee/TikTok</div>
+    <button class="ovcls" onclick="closeUpload()">✕ Tutup</button>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:14px">
+    <div class="ubox">
+      <div style="font-size:38px;margin-bottom:10px">📁</div>
+      <div style="color:#c4b5fd;font-size:14px;font-weight:600;margin-bottom:5px">Upload File Excel / CSV</div>
+      <div class="ls" style="margin-bottom:3px">Shopee: Laporan Penjualan .xlsx</div>
+      <div class="ls">TikTok: Creator Analytics .csv</div>
+      <label class="ulbl">📂 Pilih File<input type="file" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleUpload(this)"></label>
+    </div>
+    <div id="up-status"></div>
+    <div id="up-result"></div>
+  </div>
+</div>
+
+<script>
+function showPage(i,btn){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg'+i).classList.add('on');
+  btn.classList.add('on');
+}
+
+const SYS=`Kamu adalah AI CEO Assistant untuk M&D Collection, brand fashion muslim Indonesia di Shopee & TikTok Shop.
+
+MEMORI BISNIS:
+- Target omzet: Rp 200jt-400jt/bulan
+- Platform: Shopee & TikTok Shop
+- Kategori: Fashion Muslim (Gamis, Hijab, Outer, Set)
+- Strategi: Konten TikTok organik + Shopee Ads
+- Target ROAS: 3x | CR: 4% | Repeat Order: 30%
+- Kompetitor: Zahira Official, NoorFashion, Elzatta
+
+DATA BULAN INI:
+- Omzet: Rp 187,5jt (93.75% target)
+- Profit: Rp 43,2jt (+8.1%)
+- ROAS: 3.2x ✅ | CR: 3.8% ⚠️ | AOV: Rp215rb ✅ | Repeat: 28.4% ⚠️
+- Iklan: Shopee Rp18,5jt + TikTok Rp12,3jt = Rp30,8jt
+- Margin Kotor: 42.5% | Bersih: 23%
+- STOK KRITIS: Outer Cardigan Rajut sisa 15 unit (terjual 203!)
+- Live TikTok: Rp3,8jt/Rp5jt (76%) | Live Shopee: Rp2,6jt/Rp3jt (86.7%)
+- Top Affiliate: Dewi Kartika 82K → Rp3,2jt hari ini
+- Kompetitor: Zahira launch Gamis Tweed Rp289rb, NoorFashion Buy2Get1, Elzatta Gratis Ongkir
+
+Jawab dalam Bahasa Indonesia. Gunakan emoji & format yang mudah dibaca di HP.`;
+
+const CTX={
+  ceo:`Buatkan ANALISIS CEO LENGKAP hari ini:\n\n📊 EXECUTIVE SUMMARY\n✅ YANG BERJALAN BAIK\n⚠️ PERHATIAN SEGERA\n🎯 3 PRIORITAS AKSI CEO HARI INI\n💡 INSIGHT STRATEGIS`,
+  report:`Buatkan DAILY CEO REPORT singkat yang bisa dibaca dalam 2 menit. Ringkasan performa, highlight, alert, dan 3 action item hari ini.`,
+  marketing:`Analisis MARKETING hari ini:\n- Evaluasi konten & live performance\n- Rekomendasi konten besok\n- Strategi maksimalkan affiliate\n- Solusi DARURAT stok Outer Cardigan (sisa 15 unit!)\n- Tips naikkan CR dari 3.8% ke 4%`,
+  finance:`Analisis KEUANGAN:\n- Evaluasi cash flow & margin\n- Identifikasi kebocoran biaya\n- Cara efisiensi tanpa korbankan kualitas\n- Strategi capai margin bersih 28%+`,
+  competitor:`Analisis KOMPETITOR:\n- Ancaman terbesar dari Zahira, NoorFashion, Elzatta\n- Peluang dari kelemahan mereka\n- Strategi diferensiasi M&D\n- Respons vs promo kompetitor hari ini`,
+  konten:`Buatkan 5 IDE KONTEN TIKTOK untuk besok:\n- Judul dengan hook kuat\n- Format konten\n- Script pembuka 3 detik\n- Waktu posting optimal\n- Produk yang di-feature`,
+  stok:`Analisis STOK & solusi darurat:\n- Outer Cardigan sisa 15 unit — kapan habis?\n- Produk pengganti yang bisa di-push\n- Template komunikasi ke customer\n- Strategi pre-order`,
+  iklan:`Analisis IKLAN:\n- Evaluasi ROAS 3.2x — bisa lebih tinggi?\n- Optimasi split budget Shopee vs TikTok\n- Tips naikkan CR iklan ke 4%\n- Strategi iklan support live`,
+  strategi:`STRATEGI capai target omzet Rp200jt (kurang Rp12,5jt):\n- Berapa order lagi yang dibutuhkan?\n- Channel tercepat menghasilkan\n- Flash sale atau bundling?\n- Timeline aksi harian`,
+  efisiensi:`EFISIENSI BIAYA:\n- Biaya mana yang bisa dikurangi?\n- ROI komisi affiliate Rp8,2jt\n- Efisiensi packing & logistik\n- Target margin bersih 28%`,
+  proyeksi:`PROYEKSI bulan depan berdasarkan tren saat ini:\n- Target realistis & stretch\n- Asumsi biaya\n- KPI yang harus dimonitor`,
+  diferensiasi:`DIFERENSIASI M&D vs kompetitor:\n- Justify harga premium vs Zahira\n- Keunggulan yang harus di-highlight\n- Positioning M&D\n- Bangun loyalitas untuk repeat order 30%`,
+  respons_promo:`RESPONS PROMO kompetitor:\n- Counter Zahira Flash Sale 50% atau tidak?\n- Lawan NoorFashion Buy2Get1?\n- Kapan M&D harus promo tanpa rusak margin?\n- Alternatif promo yang aman`,
+  affiliate:`Strategi AFFILIATE:\n- Maksimalkan Dewi Kartika\n- Brief untuk Annisa M (120K, masih kecil)\n- Cara rekrut affiliate baru\n- Struktur komisi kompetitif`,
+  free:''
+};
+
+const QUICK={
+  ceo:['📋 Daily Report','🎯 Target Hari Ini','💡 Insight Minggu Ini','⚠️ Alert Penting'],
+  report:['📊 Summary Omzet','🎯 Action Items','⚠️ Yang Perlu Difix','💰 Status Profit'],
+  marketing:['🎬 Ide Konten Besok','📡 Tips Live TikTok','🤝 Strategi Affiliate','📦 Solusi Stok Kritis'],
+  finance:['✂️ Cara Efisiensi','📈 Proyeksi Bulan Depan','💰 Optimasi Margin','🎯 Budget Iklan'],
+  competitor:['🛡️ Lawan Promo Zahira','🌟 Keunggulan M&D','📊 Analisis Harga','🔍 Peluang Pasar'],
+  free:['📊 Analisis Bisnis','🎯 Capai Target','📦 Status Stok','💡 Rekomendasi Prioritas'],
+  konten:['📱 Hook TikTok','🎥 Format Video','⏰ Waktu Terbaik','🛍️ Produk yang Di-push'],
+  stok:['📦 Kapan Habis?','🔄 Produk Pengganti','📢 Info ke Customer','🏷️ Pre-order Strategy'],
+  iklan:['📈 Optimalkan ROAS','💰 Split Budget','🎯 Naikkan CR','📊 Evaluasi Performa'],
+  strategi:['🏁 Capai Rp200jt','⚡ Aksi Cepat','🎁 Promo Apa?','📅 Timeline Harian'],
+  efisiensi:['✂️ Potong Biaya Mana','📦 Efisiensi Logistik','🤝 ROI Affiliate','💹 Naik ke 28%'],
+  proyeksi:['📈 Target Realistis','💰 Perkiraan Biaya','📊 KPI Utama','🚀 Stretch Target'],
+  diferensiasi:['🌟 Nilai Premium M&D','❤️ Bangun Loyalitas','📣 Pesan Utama','vs Zahira'],
+  respons_promo:['🛡️ Counter Flash Sale','🎁 Promo Aman','💰 Jaga Margin','📅 Timing Promo'],
+  affiliate:['⭐ Dewi Kartika','📝 Brief Annisa M','🔍 Rekrut Baru','💰 Struktur Komisi']
+};
+
+let hist=[],busy=false;
+
+function openAI(ctx){
+  hist=[];
+  document.getElementById('chat-msgs').innerHTML='';
+  document.getElementById('ai-ov').classList.add('on');
+  document.body.style.overflow='hidden';
+  const chips=QUICK[ctx]||QUICK.free;
+  document.getElementById('quick-chips').innerHTML=chips.map(c=>`<button class="chip" onclick="quickAsk('${c.replace(/'/g,"\\'")}')">${c}</button>`).join('');
+  if(ctx!=='free'&&CTX[ctx]){
+    hist.push({role:'user',content:CTX[ctx]});
+    callAI();
+  } else {
+    addBubble('ai','👋 Halo! Saya AI CEO Assistant M&D Collection.\n\nSaya sudah hafal semua data bisnis kamu.\n\nSilakan tanya apapun atau tap salah satu tombol di atas! 🚀');
+  }
+}
+
+function closeAI(){
+  document.getElementById('ai-ov').classList.remove('on');
+  document.body.style.overflow='';
+  hist=[];
+  document.getElementById('chat-msgs').innerHTML='';
+}
+
+function quickAsk(text){
+  if(busy)return;
+  hist.push({role:'user',content:text});
+  addBubble('user',text);
+  callAI();
+}
+
+function addBubble(role,txt){
+  const el=document.createElement('div');
+  el.className=role==='user'?'mu':'ma';
+  el.textContent=txt;
+  const c=document.getElementById('chat-msgs');
+  c.appendChild(el);
+  el.scrollIntoView({behavior:'smooth',block:'end'});
+}
+
+function showTyping(){
+  const el=document.createElement('div');
+  el.className='typing';el.id='typing';
+  el.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+  document.getElementById('chat-msgs').appendChild(el);
+  el.scrollIntoView({behavior:'smooth',block:'end'});
+}
+
+function hideTyping(){const t=document.getElementById('typing');if(t)t.remove();}
+
+async function callAI(){
+  if(busy)return;
+  busy=true;
+  document.getElementById('csnd').disabled=true;
+  showTyping();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SYS,messages:hist.map(m=>({role:m.role,content:m.content}))})
+    });
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const d=await r.json();
+    const reply=d.content?.map(c=>c.text||'').join('')||'Maaf ada kesalahan.';
+    hideTyping();
+    hist.push({role:'assistant',content:reply});
+    addBubble('ai',reply);
+  }catch(e){
+    hideTyping();
+    addBubble('ai','❌ Koneksi gagal.\n\nPastikan kamu membuka app ini dari link GitHub Pages:\nhttps://USERNAME.github.io/md-collection-workspace\n\nBukan dari folder Download!');
+  }
+  busy=false;
+  document.getElementById('csnd').disabled=false;
+}
+
+function sendChat(){
+  const inp=document.getElementById('cin');
+  const txt=inp.value.trim();
+  if(!txt||busy)return;
+  hist.push({role:'user',content:txt});
+  addBubble('user',txt);
+  inp.value='';
+  callAI();
+}
+
+function openUpload(){
+  document.getElementById('up-ov').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closeUpload(){
+  document.getElementById('up-ov').classList.remove('on');
+  document.body.style.overflow='';
+  document.getElementById('up-status').innerHTML='';
+  document.getElementById('up-result').innerHTML='';
+}
+
+async function handleUpload(inp){
+  const file=inp.files[0];if(!file)return;
+  const sEl=document.getElementById('up-status');
+  const rEl=document.getElementById('up-result');
+  rEl.innerHTML='';
+  sEl.innerHTML=`<div class="sbox">📂 <strong>${file.name}</strong> (${(file.size/1024).toFixed(1)} KB)<br><br><span style="color:#a78bfa">🤖 AI sedang menganalisis... harap tunggu</span></div>`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SYS,messages:[{role:'user',content:`File upload dari M&D Collection:\n- Nama: "${file.name}"\n- Ukuran: ${(file.size/1024).toFixed(1)} KB\n- Tipe: ${file.name.endsWith('.csv')?'CSV TikTok':'Excel Shopee'}\n\nBerikan:\n📦 INTERPRETASI DATA\n🏆 3 INSIGHT UTAMA\n✅ AKSI SEGERA\n❓ APA YANG PERLU DICEK LEBIH DALAM?`}]})
+    });
+    const d=await r.json();
+    const reply=d.content?.map(c=>c.text||'').join('')||'Selesai.';
+    sEl.innerHTML=`<div class="sbox" style="border-color:#34d399;color:#34d399">✅ <strong>${file.name}</strong> berhasil dianalisis</div>`;
+    rEl.innerHTML=`<div class="rbox">${reply}</div>`;
+  }catch(e){
+    sEl.innerHTML='';
+    rEl.innerHTML=`<div class="sbox" style="border-color:#ef4444;color:#f87171">❌ Gagal. Buka app dari link GitHub Pages, bukan dari Download.</div>`;
+  }
+}
+<\/script>
+</body>
+</html>
